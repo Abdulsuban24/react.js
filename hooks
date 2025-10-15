@@ -66,3 +66,129 @@ function RenderCountExample() {
 
 export default RenderCountExample;
 
+***usereducer
+
+import React, { useReducer } from "react";
+
+const initialState = { name: "", email: "" };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_NAME":
+      return { ...state, name: action.payload };
+    case "SET_EMAIL":
+      return { ...state, email: action.payload };
+    case "RESET":
+      return initialState;
+    default:
+      return state;
+  }
+}
+
+function Form() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      <input
+        placeholder="Name"
+        value={state.name}
+        onChange={(e) => dispatch({ type: "SET_NAME", payload: e.target.value })}
+      />
+      <input
+        placeholder="Email"
+        value={state.email}
+        onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
+      />
+      <button onClick={() => dispatch({ type: "RESET" })}>Reset</button>
+
+      <p>👤 {state.name}</p>
+      <p>📧 {state.email}</p>
+    </div>
+  );
+}
+
+export default Form;
+
+
+
+life cycle of react
+1. mounting
+import React from "react";
+
+class Welcome extends React.Component {
+  constructor() {
+    super();
+    this.state = { message: "Hello, React!" };
+    console.log("1️⃣ constructor");
+  }
+
+  componentDidMount() {
+    console.log("3️⃣ componentDidMount - Component is mounted!");
+  }
+
+  render() {
+    console.log("2️⃣ render");
+    return <h1>{this.state.message}</h1>;
+  }
+}
+
+export default Welcome;
+
+
+2. updating 
+
+import React from "react";
+
+class Counter extends React.Component {
+  constructor() {
+    super();
+    this.state = { count: 0 };
+    console.log("1️⃣ constructor");
+  }
+
+  increment = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  componentDidUpdate() {
+    console.log("3️⃣ componentDidUpdate - Component updated!");
+  }
+
+  render() {
+    console.log("2️⃣ render");
+    return (
+      <div>
+        <h2>Count: {this.state.count}</h2>
+        <button onClick={this.increment}>Add +1</button>
+      </div>
+    );
+  }
+}
+
+export default Counter;
+
+
+3. UNMOUNTING 
+import React, { useEffect, useState } from "react";
+
+function Timer() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setCount(c => c + 1), 1000);
+
+    // cleanup function (runs on unmount)
+    return () => {
+      clearInterval(timer);
+      console.log("Component unmounted — timer stopped!");
+    };
+  }, []); // empty array = only set up once
+
+  return <h2>Timer: {count}</h2>;
+}
+
+export default Timer;
+
+
+life 
